@@ -1,4 +1,7 @@
 var events = require('events');
+var fs = require('fs');
+var lame = require('lame');
+var Speaker = require('speaker');
 
 // ######################################################## CONSTRUCTOR
 function AudioPlayer(pMusicDir)
@@ -6,14 +9,10 @@ function AudioPlayer(pMusicDir)
 	this.musicDir = pMusicDir;
 }
 
+// ######################################################## PRIVATE VARIABLES
 var sp;
 var songList = [];
 var playing = false;
-
-// ######################################################## PRIVATE VARIABLES
-var fs = require('fs');
-var lame = require('lame');
-var Speaker = require('speaker');
 
 AudioPlayer.prototype = new events.EventEmitter;
 
