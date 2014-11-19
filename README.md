@@ -12,6 +12,11 @@ var audioPlayer = AudioPlayerClass.createInstance('/path/to/mp3/files');
 audioPlayer.addSongAndPlay();
 ```
 
+then :
+```bash
+$ sudo node MusicBox.js 
+```
+
 ## Dependencies
 MusicBox Player rely on the excellent [OnOff](https://github.com/fivdi/onoff) library for handling GPIO interrupts detection.
 It also uses [Lame](https://www.npmjs.org/package/lame) and [Speaker](https://www.npmjs.org/package/speaker) NodeJS modules by [TooTallNate](https://github.com/TooTallNate)
