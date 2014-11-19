@@ -48,7 +48,6 @@ GPIOButton.prototype.watchButton = function()
 	});
 };
 
-
 GPIOButton.prototype.countButtonPressTime = function(pT1, context)
 {
 	var self = context;

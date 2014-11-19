@@ -1,11 +1,13 @@
 (function(){
 
-	var GPIOButtonClass = require ('./GPIOButton'); 
+	var GPIOButtonClass = require('./GPIOButton'); 
+	var AudioPlayerClass = require('./AudioPlayer');
 
 	var GPIOButton = GPIOButtonClass.createInstance(21, 0);
+	var audioPlayer = AudioPlayerClass.createInstance('/home/pi/music/test');
 
 	GPIOButton.on('press', function() { 
-		console.log('PRESS');
+		audioPlayer.addSongAndPlay();
 	});
 
 	GPIOButton.on('longPress', function() { 
