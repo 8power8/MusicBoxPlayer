@@ -5,10 +5,12 @@
 
 	var GPIOButtonClass = require('./GPIOButton');
 	var GPIOPermanentSwitch = require('./GPIOPermanentSwitch');
+	var NeoPixelClass = require('./NeoPixel');
 	var AudioPlayerClass = require('./AudioPlayer');
 
 	var GPIOPermanentSwitch = GPIOPermanentSwitch.createInstance(17, 0);
 	var GPIOButton = GPIOButtonClass.createInstance(21, 0);
+	var neoPixel = NeoPixelClass.createInstance();
 	var audioPlayer = AudioPlayerClass.createInstance(nightMusicPath);
 
 	//##################################### Playlist type switch
@@ -41,15 +43,14 @@
 	});
 
 	//##################################### AudioPlayer
-	audioPlayer.on('songStart', function() { 
-		console.log("coco");
+	audioPlayer.on('playlistStart', function() { 
+		console.log('playlist start');
+		neoPixel.startRandomColors();
 	});
 
 	audioPlayer.on('playListComplete', function() { 
-		console.log("pouet");
+		console.log('playlist complete');
+		neoPixel.stopRandomColors();
 	});
-
-	
-
 
 })();

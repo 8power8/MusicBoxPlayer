@@ -13,6 +13,7 @@ function AudioPlayer(pMusicDir)
 var sp;
 var songList = [];
 var playing = false;
+var playlistRuning = false;
 var file;
 
 AudioPlayer.prototype = new events.EventEmitter;
@@ -27,6 +28,13 @@ AudioPlayer.prototype.play = function()
 
 		if(songList.length > 0)
 		{
+
+			if(!playlistRuning)
+			{
+				playlistRuning = true;
+				self.emit('playlistStart');
+			}
+
 			var song = songList.shift();
 			file = fs.createReadStream(song);
 
@@ -71,6 +79,7 @@ AudioPlayer.prototype.play = function()
 		}
 		else
 		{
+			playlistRuning = false;
 			self.emit('playListComplete');
 		}
 		
