@@ -13,6 +13,7 @@ function AudioPlayer(pMusicDir)
 var sp;
 var songList = [];
 var playing = false;
+var file;
 
 AudioPlayer.prototype = new events.EventEmitter;
 
@@ -20,8 +21,7 @@ AudioPlayer.prototype = new events.EventEmitter;
 AudioPlayer.prototype.play = function() 
 {
 	var self = this;
-	var file;
-		
+	
 	if(!playing)
 	{
 
@@ -46,7 +46,8 @@ AudioPlayer.prototype.play = function()
 			var decodedSound = file.pipe(new lame.Decoder());
 
 			// triggered when ID3 tags are received == when sound is ready to be played
-			decodedSound.on('format', function (format){
+			decodedSound.on('format', function (format)
+			{
 				
 				sp = null;
 				sp = new Speaker(format);
@@ -54,24 +55,30 @@ AudioPlayer.prototype.play = function()
 				this.pipe(sp);
 
 				sp.on('open', function(){
-				  	console.log('speaker open');
+				  	//console.log('speaker open');
+				  	self.emit('songStart');
 				});
 
 				sp.on('close', function(){
-					console.log('speaker close');
-					console.log("There is now " + songList.length + " song in song list.");
+					//console.log('speaker close');
+					//console.log("There is now " + songList.length + " song in song list.");
 					playing = false;
 					self.play();
+					
 				});
 
 			});
+		}
+		else
+		{
+			self.emit('playListComplete');
 		}
 		
 	}
 }
 
 /**
-* Pick-up a random file from pDir
+* Pick-up a random file from music directory
 */
 AudioPlayer.prototype.getRandomSong = function()
 {
@@ -82,13 +89,27 @@ AudioPlayer.prototype.getRandomSong = function()
 /**
 * Add a song to songDir array
 */
-AudioPlayer.prototype.addSongAndPlay = function()
+AudioPlayer.prototype.addSongAndPlay = function(pMusicDir)
 {
+	if (pMusicDir !== undefined) this.musicDir = pMusicDir;
 	var song = this.getRandomSong(this.musicDir);
 	songList.push(song);
 	this.play();
 	console.log("Song added to song list: " + song);
 	console.log("There is now " + songList.length + " song in song list.");
+}
+
+/**
+* Stop the player and empty the playlist
+*/
+AudioPlayer.prototype.emptyPlayList = function(pMusicDir)
+{
+	
+	if(file) file.unpipe(), file = null;
+	if(sp) sp = null;
+	//songList = [];
+	//playing = false;
+	console.log("Stop & empty playlist");
 }
 
 // ######################################################## STATIC FUNCTIONS
